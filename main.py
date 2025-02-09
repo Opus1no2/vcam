@@ -24,12 +24,13 @@ if __name__ == "__main__":
             # play nice with pyvirtualcam
             frame = np.stack((frame,) * 3, axis=-1)
 
-            frame = apply_block_shift_glitch(frame)
-            frame = apply_color_shift_glitch(frame)
-            frame = add_scanlines(frame, line_spacing=4, intensity=0.5)
+            frame = apply_block_shift_glitch(frame, glitch_chance=0.01)
+            frame = apply_color_shift_glitch(frame, shift_range=6)
+            frame = add_scanlines(frame, line_spacing=4, intensity=0.7)
             frame = color_jitter(frame, intensity=0.05)
             frame = add_noise(frame, noise_level=0.02)
-            frame = pixel_sort_effect(frame, glitch_chance=0.02)
+            frame = pixel_sort_effect(frame, glitch_chance=0.01)
+            frame = wave_distortion(frame, amplitude=0.5, frequency=0.01)
 
             cv2.imshow("frame", frame)
 
